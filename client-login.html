@@ -1,0 +1,103 @@
+
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+	<title>Login</title>
+	<meta charset="utf-8">
+
+	<!-- BOOTSTRAP -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+
+	<script type="text/javascript">
+	function login() {
+	 
+
+	  
+	  
+	  // De esta forma se obtiene la instancia del objeto XMLHttpRequest
+	  
+	  connection = new XMLHttpRequest();
+	  
+	 
+	  // Preparando la función de respuesta
+	  connection.onreadystatechange = response;
+
+
+	 
+	  // Realizando la petición HTTP con método POST
+	  connection.open('GET', 'http://localhost/appmusicfinal/public/index.php/usuarios/login.json?username=admin&password=1234');
+
+	  
+	  connection.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	  
+	  connection.send(); 
+	  
+	  // name=david
+	  document.getElementById('continuar').hidden = false
+	}
+	 
+	function response() {
+	
+	  if(connection.readyState == 4) {
+	  	var response = JSON.parse(connection.responseText);
+	  	document.getElementById('code').innerHTML = response.code;
+	  	document.getElementById('message').innerHTML = response.message;
+	  	document.getElementById('data').innerHTML = response.data;
+	    
+	  }
+	}
+	function comprobate(){
+	  var username = document.getElementById('username').value;
+	  var password = document.getElementById('password').value;
+	  console.log(password);
+	  console.log(username);
+	  if(username == "admin" && password == "1234")
+	  {
+	  	login();
+	  }
+	  else{
+	  	document.getElementById('code').innerHTML = "No se encuentra el usuario";
+	  }
+
+	}
+	
+	
+</script>
+
+</head>
+<body>
+
+	<div class="main container">
+
+		<h1>Login</h1>
+
+		<h4>Solo usuarios administradores</h4>
+
+		<hr>
+
+		<form>
+			<div class="form-group">
+				<input type="text" placeholder="username" name="username" id="username">
+				<input type="password" placeholder="password" name="password" id="password">
+				<input type="button" name="submit" value="Comprobar" id="submit"  onclick= "comprobate()">
+			</div>
+		</form>
+        
+		<p id="code"></p>
+		<p id="message"></p>
+		<p id="data"></p>
+
+		<a href="http://localhost/clienteWeb/anyadir_canciones.html" hidden="true" id="continuar">Continuar</a>
+
+	</div>
+
+</body>
+</html>

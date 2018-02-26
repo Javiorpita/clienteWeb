@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Login</title>
+    <meta charset="utf-8">
+
+    <!-- BOOTSTRAP -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+<script type="text/javascript">
+  function create() {
+     var titulo = document.getElementById('titulo').value;
+     var artista = document.getElementById('artista').value;
+     var url = document.getElementById('url').value;
+     var token = document.getElementById('token').value;
+
+   
+
+    
+    
+    // De esta forma se obtiene la instancia del objeto XMLHttpRequest
+    
+    connection = new XMLHttpRequest();
+    
+   
+    // Preparando la función de respuesta
+    connection.onreadystatechange = response;
+    //connection.headers: { 'Authorization': token },
+    connection.Authorization = token;
+    console.log(artista);
+
+
+
+   
+    // Realizando la petición HTTP con método POST
+    connection.open('POST', 'http://localhost/appmusicfinal/public/index.php/canciones/create.json');
+
+    
+    connection.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    connection.setRequestHeader("Authorization", token);
+    
+   
+    connection.send("titulo=" + titulo + "&artista=" + artista + "&url=" + url); // name=david// name=david
+  }
+   
+  function response() {
+  
+    if(connection.readyState == 4) {
+      var response = JSON.parse(connection.responseText);
+      document.getElementById('code').innerHTML = response.code;
+      document.getElementById('message').innerHTML = response.message;
+      document.getElementById('data').innerHTML = response.data;
+      
+    }
+  }
+  function comprobate(){
+    var username = document.getElementById('username').value;
+    var password = document.getElementById('password').value;
+    console.log(password);
+    console.log(username);
+    if(username == "admin" && password == "1234")
+    {
+      login();
+    }
+    else{
+      document.getElementById('code').innerHTML = "No se encuentra el usuario";
+    }
+
+  }
+ 
+</script>
+
+
+</head>
+<body>
+
+    <div class="main container">
+
+        <h1>Crear usuarios</h1>
+
+        <h3>Solo usuarios administradores</h3>
+        <form>
+            <div class="form-group">
+               <h4>Token</h4>
+
+            
+        <input type="text" placeholder="token" name="token" id="token">
+            </div>
+        </form>
+
+
+        <hr>
+
+        <form>
+            <div class="form-group">
+              <h4>Parámetros</h4>
+                <input type="text" placeholder="titulo" name="titulo" id="titulo">
+                  <input type="text" placeholder="artista" name="artista" id="artista">
+                    <input type="text" placeholder="url" name="url" id="url">
+                      
+               
+                <input type="button" name="submit" value="Insertar" id="submit"  onclick= "create()">
+            </div>
+        </form>
+        
+        <p id="code"></p>
+        <p id="message"></p>
+        <p id="data"></p>
+
+        
+    </div>
+
+</body>
+</html>
